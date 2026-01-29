@@ -12,6 +12,14 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  --color-brand-lime: #C2F217;
+  --color-dark-bg: #0A0A0A;
+  
+  /* Шинэ фонт нэмэх */
+  --font-rounded: var(--font-mplus); 
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
