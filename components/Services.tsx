@@ -74,7 +74,7 @@ export default function Services() {
   };
 
   return (
-    <section className="bg-white py-24 font-rounded text-black relative">
+    <section id="services" className="bg-white py-24 font-rounded text-black relative">
       <div className="max-w-7xl mx-auto px-4">
         
         <div className="text-center mb-16">

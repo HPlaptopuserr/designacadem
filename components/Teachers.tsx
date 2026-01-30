@@ -27,7 +27,7 @@ export default function Teachers() {
   }
 
   return (
-    <section className="py-24 bg-white font-rounded overflow-hidden">
+    <section id="teachers" className="py-24 bg-white font-rounded overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 relative">
         <div className="text-center mb-20">
           <h2 className="text-5xl font-black uppercase mb-2 tracking-tight text-black">
@@ -49,11 +49,10 @@ export default function Teachers() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-y-0 items-start min-h-[500px]">
             {visibleTeachers.map((teacher, idx) => (
               <motion.div
-                // ЧУХАЛ: Key нь зөвхөн багшийн нэр (эсвэл ID) байна. Index оруулж болохгүй!
-                // Ингэснээр React энэ элементийг "байрлал нь өөрчлөгдсөн хуучин элемент" гэж таньж "урсгана".
+
                 key={teacher.name} 
                 
-                layout // Энэ prop нь байрлал өөрчлөгдөхөд автоматаар зөөлөн хөдөлгөөн оруулна
+                layout 
                 
                 initial={{ opacity: 0, x: 20 }} // Шинээр орж ирж буй карт баруун талаас бүдгэрч орж ирнэ
                 animate={{ opacity: 1, x: 0 }} 
