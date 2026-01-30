@@ -1,7 +1,10 @@
-"use client"; 
+"use client";
+
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import { motion } from "framer-motion";
+
 export default function Pricing() {
   const courses = [
     {
@@ -25,18 +28,34 @@ export default function Pricing() {
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const itemsToShow = 3;
+  const itemsToShow = 3; // Хэдэн ширхэг харагдах
   const len = courses.length;
 
-  const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % len);
-  const prevSlide = () => setCurrentIndex((prev) => (prev === 0 ? len - 1 : prev - 1));
+  // Modulo ашиглахгүйгээр шууд тоолно (Infinite loop logic)
+  const nextSlide = () => setCurrentIndex((prev) => prev + 1);
+  const prevSlide = () => setCurrentIndex((prev) => prev - 1);
 
-  const visibleCourses = [...courses, ...courses].slice(currentIndex, currentIndex + itemsToShow);
+  // Index тооцоолох функц (Сөрөг тоог зөв тооцоолно)
+  const getCourseData = (index: number) => {
+    const wrappedIndex = ((index % len) + len) % len;
+    return courses[wrappedIndex];
+  };
+
+  // Харагдах картуудыг үүсгэх
+  const visibleItems = [];
+  for (let i = 0; i < itemsToShow; i++) {
+    const virtualIndex = currentIndex + i;
+    visibleItems.push({
+      data: getCourseData(virtualIndex),
+      key: virtualIndex, // Unique Key чухал!
+    });
+  }
 
   return (
     <section className="relative bg-[#C2F217] py-24 overflow-hidden font-rounded text-black">
-      ы
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full z-0 pointer-events-none select-none flex items-center justify-center">
+      
+      {/* Background decoration */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full z-0 pointer-events-none select-none flex items-center justify-center">
         <Image 
           src="/logos/bgw.png" 
           alt="Background Logo" 
@@ -44,14 +63,12 @@ export default function Pricing() {
           height={1200}
           className="w-full h-[130%] object-contain opacity-100 brightness-0" 
         />
-    </div>
+      </div>
 
-      {/* Decorative 'S' Letter */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-5 z-0">
         <div className="absolute top-[-20%] left-[-10%] text-[500px] font-black leading-none">S</div>
       </div>
 
-      {/* PARENT CONTAINER: z-index 10 өгч зурагны дээр гаргана */}
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         
         <div className="text-center mb-16">
@@ -63,23 +80,41 @@ export default function Pricing() {
           <ChevronLeft size={28} strokeWidth={2.5} />
         </button>
 
-        <div key={currentIndex} className="grid grid-cols-1 md:grid-cols-3 gap-8 animate-soft">
-          {visibleCourses.map((course, idx) => (
-            <div key={idx} className="flex flex-col items-center text-center group backdrop-blur-sm bg-white/20 rounded-3xl p-6 border border-black/5 hover:bg-white/40 transition-all duration-300">
-              <h3 className="text-2xl font-bold uppercase mb-2 group-hover:scale-105 transition-transform duration-300">{course.title}</h3>
+        {/* Grid Layout with Motion */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {visibleItems.map(({ data: course, key }) => (
+            <motion.div 
+              key={key} // Virtual Index ашигласнаар React үүнийг нэг элемент шилжиж байна гэж танина
+              layout // Smooth layout transition
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 80, 
+                damping: 15, 
+                mass: 1 
+              }}
+              className="flex flex-col items-center text-center group p-6 border border-black/5 bg-[#C2F217]/50 backdrop-blur-sm md:backdrop-blur-0 md:bg-transparent"
+            >
+              <h3 className="text-2xl font-bold uppercase mb-2 group-hover:scale-105 transition-transform duration-300">
+                {course.title}
+              </h3>
               <p className="text-sm font-bold mb-6">{course.subtitle}</p>
+              
               <ul className="space-y-2 mb-8 text-[11px] font-medium leading-relaxed min-h-[180px]">
                 {course.items.map((item, i) => <li key={i}>- {item}</li>)}
               </ul>
+              
               <div className="mb-6 relative">
                 <span className="text-3xl font-bold tracking-tight">{course.price}</span>
                 <span className="absolute -top-1 -right-3 text-xs font-bold">₮</span>
                 <span className="block text-[8px] font-bold text-right mt-1 opacity-60 uppercase tracking-widest">Сараар</span>
               </div>
+              
               <button className="bg-black text-white text-[10px] font-bold uppercase py-3 px-10 rounded-full hover:scale-105 transition-transform shadow-md hover:shadow-xl">
                 Бүртгүүлэх
               </button>
-            </div>
+            </motion.div>
           ))}
         </div>
 

@@ -1,7 +1,7 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image'; // Image import хийхээ мартуузай
 import { usePathname } from 'next/navigation';
 import { Home, LucideIcon, Menu, X, ChevronRight } from 'lucide-react';
 
@@ -45,21 +45,19 @@ export default function Header() {
       <header className="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-black backdrop-blur-lg border-b border-black">
         <div className="max-w-360 mx-auto px-6 lg:px-24 h-24 flex items-center justify-between">
           
-          <Link href="/" className="flex items-center gap-3 z-50 group">
-            <div className="w-10 h-8 lg:w-12 lg:h-10 relative transition-transform group-hover:scale-105">
-              <svg viewBox="0 0 100 80" className="w-full h-full fill-none stroke-[#ccff00]" strokeWidth="12" strokeLinecap="round">
-                <path d="M20,10 H50 C70,10 85,25 85,40 C85,55 70,70 50,70 H20 V40 H40" />
-              </svg>
-            </div>
-            <div className="flex flex-col leading-none">
-              <span className="text-white text-[20px] lg:text-[24px] font-black tracking-tight group-hover:text-[#ccff00] transition-colors">
-                {HEADER_CONTENT.logoTitle}
-              </span>
-              <span className="text-[#ccff00] text-[12px] lg:text-[14px] font-bold tracking-widest uppercase opacity-80 group-hover:opacity-100">
-                {HEADER_CONTENT.logoSubtitle}
-              </span>
-            </div>
-          </Link>
+        <Link href="/" className="flex items-center gap-3 z-50 group">
+
+          <div className="relative w-28 h-10 lg:w-32 lg:h-12 transition-transform group-hover:scale-105">
+              <Image 
+                src="/desac.png"
+                alt="Desac Logo" 
+                fill
+                priority 
+                sizes="(max-width: 768px) 112px, 128px"
+                className="object-contain" 
+              />
+          </div>
+        </Link>
 
           <nav className="hidden xl:flex items-center gap-10">
             {NAV_LINKS.map((link, index) => {

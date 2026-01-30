@@ -73,22 +73,22 @@ export const teachersData = [
     image: "/teachers/image3.png",
   },
   {
-    name: "Б.СУВД ЭРДЭНЭ",
+    name: "Б.МӨНХЖАРГАЛ",
     role: "UI Дизайны багш",
     image: "/teachers/image1.png",
   },
     {
-    name: "Б.СУВД ЭРДЭНЭ",
+    name: "Э.ЭРДЭНЭ",
     role: "UI Дизайны багш",
     image: "/teachers/image1.png",
   },
     {
-    name: "М.АРИУНБОЛД",
+    name: "М.Дондог",
     role: "Дизайны багш",
     image: "/teachers/image3.png",
   },
     {
-    name: "Д.СУВД ЭРДЭНЭ",
+    name: "Д.СУВД ",
     role: "UX Дизайны багш",
     image: "/teachers/image2.png",
   },

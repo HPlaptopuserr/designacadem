@@ -16,19 +16,17 @@ export default function Banner() {
               />
           </div>
 
-          <div className="col-span-12 lg:col-span-6 lg:col-start-7 relative z-10 px-8 lg:px-16 py-12 flex flex-col justify-center items-start">
+          <div className="col-span-12 lg:col-span-6 lg:col-start-7 relative z-10 px-8 lg:px-16 py-20 flex flex-col justify-center items-start">
             
-            <h2 className="text-white text-3xl lg:text-5xl font-black uppercase leading-[0.9] tracking-tighter mb-4">
-              СУДАЛХАА <br />
-              БОЛЬЁ <br />
-              <span className="text-brand-lime">ЭХЭЛ...</span>
+            <h2 className="text-white text-3xl lg:text-4xl uppercase leading-[0.9] tracking-tighter mb-3">
+              СУДАЛХАА БОЛЬЁ ЭХЭЛ...
             </h2>
             
-            <p className="text-gray-400 text-lg font-medium mb-10 tracking-wide max-w-md">
-              Бүх зүйл танаас хамаарна. Яг одоо бидэнтэй холбогдоорой.
+            <p className="text-brand-lime text-lg font-medium mb-10 tracking-wide max-w-md">
+              Бидэнтэй Холбогдоорой.
             </p>
             
-            <button className="bg-brand-lime text-black font-black text-[13px] uppercase tracking-[0.2em] py-4 px-12 rounded-2xl hover:scale-105 hover:bg-white hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(194,242,23,0.4)]">
+            <button className="bg-brand-lime text-black font-black text-[13px] uppercase tracking-[0.2em] py-4 px-12 rounded-full hover:scale-105 hover:text-black transition-all duration-300">
               Бүртгүүлэх
             </button>
           </div>
