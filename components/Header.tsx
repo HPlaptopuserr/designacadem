@@ -27,9 +27,8 @@ const NAV_LINKS: NavLink[] = [
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const pathname = usePathname(); // Одоо байгаа хуудсыг авах
+  const pathname = usePathname(); 
 
-  // Mobile Menu нээлттэй үед Scroll-ийг түгжих
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -43,10 +42,9 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-black/80 backdrop-blur-lg border-b border-black/10 supports-[backdrop-filter]:bg-black/60">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-24 h-24 flex items-center justify-between">
+      <header className="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-black backdrop-blur-lg border-b border-black">
+        <div className="max-w-360 mx-auto px-6 lg:px-24 h-24 flex items-center justify-between">
           
-          {/* --- Logo Section --- */}
           <Link href="/" className="flex items-center gap-3 z-50 group">
             <div className="w-10 h-8 lg:w-12 lg:h-10 relative transition-transform group-hover:scale-105">
               <svg viewBox="0 0 100 80" className="w-full h-full fill-none stroke-[#ccff00]" strokeWidth="12" strokeLinecap="round">
@@ -63,7 +61,6 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* --- Desktop Navigation --- */}
           <nav className="hidden xl:flex items-center gap-10">
             {NAV_LINKS.map((link, index) => {
               const isActive = pathname === link.href;
@@ -76,7 +73,6 @@ export default function Header() {
                 >
                   {link.icon && <link.icon size={18} className={isActive ? "text-[#ccff00]" : "text-[#ccff00] opacity-70"} />}
                   {link.label}
-                  {/* Active Indicator Dot */}
                   {isActive && (
                     <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#ccff00] rounded-full shadow-[0_0_8px_#ccff00]"></span>
                   )}
@@ -85,7 +81,6 @@ export default function Header() {
             })}
           </nav>
 
-          {/* --- Desktop Buttons --- */}
           <div className="hidden xl:flex items-center gap-4">
             <button className="bg-[#ccff00] text-black font-black text-[13px] px-8 py-3 rounded-full hover:bg-[#dfff40] hover:shadow-[0_0_20px_rgba(204,255,0,0.3)] transition-all transform hover:-translate-y-0.5 active:translate-y-0">
               {HEADER_CONTENT.primaryBtnText}
@@ -95,7 +90,6 @@ export default function Header() {
             </button>
           </div>
 
-          {/* --- Mobile Menu Toggle --- */}
           <button 
             className="xl:hidden text-white hover:text-[#ccff00] transition-colors z-50 p-2 focus:outline-none"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -113,7 +107,6 @@ export default function Header() {
         </div>
       </header>
 
-      {/* --- Mobile Menu Overlay --- */}
       <div 
         className={`fixed inset-0 bg-black/95 backdrop-blur-2xl z-40 transition-all duration-500 ease-in-out ${
           isMobileMenuOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 -translate-y-4 invisible pointer-events-none'
