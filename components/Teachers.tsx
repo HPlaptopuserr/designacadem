@@ -46,7 +46,7 @@ export default function Teachers() {
         </button>
 
         {/* Grid Container */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-y-0 items-start min-h-[500px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-y-0 items-start min-h-125">
             {visibleTeachers.map((teacher, idx) => (
               <motion.div
 

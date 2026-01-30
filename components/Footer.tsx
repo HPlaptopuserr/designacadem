@@ -103,7 +103,7 @@ export default function Footer() {
       </div>
 
       <div className="bg-[#ccff00] py-4 relative z-20">
-        <div className="max-w-7xl mx-auto px-6 lg:px-24">
+        <div className="max-w-7xl mx-auto px-6">
           <p className="text-black text-[12px] font-normal text-left">
             © 2022 Activecode.mn <span className="font-bold">Бүх эрх хуулиар хамгаалагдсан.</span> Art agency LLC
           </p>

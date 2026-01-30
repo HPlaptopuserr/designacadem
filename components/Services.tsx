@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react"; // 1. useEffect нэмэх
+import { useState, useEffect } from "react"; 
 import Image from "next/image";
 import { X } from "lucide-react";
 
@@ -159,7 +159,7 @@ export default function Services() {
                 </label>
                 <input 
                   type="text" 
-                  className="w-full px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#C2F217] focus:border-transparent transition-all"
+                  className="w-full px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-transparent transition-all"
                   placeholder=""
                 />
               </div>
@@ -170,12 +170,12 @@ export default function Services() {
                 </label>
                 <input 
                   type="tel" 
-                  className="w-full px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#C2F217] focus:border-transparent transition-all"
+                  className="w-full px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-transparent transition-all"
                   placeholder=""
                 />
               </div>
 
-              <button className="w-full bg-[#C2F217] text-black font-bold text-sm uppercase tracking-widest py-4 rounded-full hover:brightness-95 active:scale-[0.98] transition-all shadow-md mt-4">
+              <button className="w-full bg-brand-lime text-black font-bold text-sm uppercase tracking-widest py-4 rounded-full hover:brightness-95 active:scale-[0.98] transition-all shadow-md mt-4">
                 Бүртгүүлэх
               </button>
             </form>

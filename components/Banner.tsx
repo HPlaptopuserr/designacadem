@@ -1,6 +1,12 @@
+'use client';
+
 import Image from 'next/image';
+import { useState } from 'react'; 
+import RegistrationModal from './RegistrationModal';
+
 
 export default function Banner() {
+const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <section className="py-24 bg-white font-rounded">
       <div className="max-w-7xl mx-auto px-4">
@@ -25,10 +31,16 @@ export default function Banner() {
             <p className="text-brand-lime text-lg font-medium mb-10 tracking-wide max-w-md">
               Бидэнтэй Холбогдоорой.
             </p>
-            
-            <button className="bg-brand-lime text-black font-black text-[13px] uppercase tracking-[0.2em] py-4 px-12 rounded-full hover:scale-105 hover:text-black transition-all duration-300">
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="bg-[#ccff00] text-black font-black uppercase text-sm py-4 px-10 rounded-full hover:bg-[#dfff40] hover:scale-105 transition-all shadow-lg shadow-[#ccff00]/20"
+            >
               Бүртгүүлэх
             </button>
+            <RegistrationModal 
+                    isOpen={isModalOpen} 
+                    onClose={() => setIsModalOpen(false)} 
+                  />
           </div>
 
           {/* Decorative Glow Effect */}

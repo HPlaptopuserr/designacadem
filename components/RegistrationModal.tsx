@@ -1,65 +1,95 @@
 'use client';
 
 import { useState } from 'react';
-import { X, ChevronDown } from 'lucide-react';
+import { X, ChevronDown, Monitor } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image'; // Image import нэмсэн
+import Image from 'next/image';
 
 interface RegistrationModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-// ТАНЫ ӨГСӨН СУРГАЛТЫН МЭДЭЭЛЭЛ
-const COURSES = [
+// Data Type
+interface Course {
+  icon: string | null;
+  title: string;
+  description: string;
+  price: string;
+}
+
+// БҮТЭН ӨГӨГДӨЛ (Header дээрх 6 төрөл)
+const COURSES: Course[] = [
   {
     icon: "/services/Services5.png",
     title: "UX/UI дизайны сургалт",
-    description: "ux/ui дизайны суурь ерөнхий ойлголтыг өгөх мэргэжлийн арга барилд сургах сургалтандаа таныг урьж байна.",
+    description: "UX/UI дизайны суурь ерөнхий ойлголтыг өгөх мэргэжлийн арга барилд сургах сургалт.",
     price: "2,000,000₮"
   },
   {
     icon: "/services/Services.png",
-    title: "UX -ийн хуулиудын сургалт",
-    description: "Ux-дизайны хууль, хэрэглэгчийн шаардлага тодорхойлох, системийн шинжилгээ, ux зураглал, ux тест мэргэжлийн арга барилд сургах сургалтандаа таныг урьж байна.",
+    title: "UX-ийн хуулиудын сургалт",
+    description: "UX-дизайны хууль, хэрэглэгчийн шаардлага тодорхойлох, системийн шинжилгээ.",
     price: "1,500,000₮"
   },
   {
     icon: "/services/Services1.png",
-    title: "UI дизайн, figma сургалт",
-    description: "ux-дизайнераас ирсэн дизайныг хэрхэн ui-дизайн болгон зурах талаарх мэргэжлийн арга барилд сургах сургалтандаа таныг урьж байна.",
+    title: "UI дизайн, Figma сургалт",
+    description: "UX-дизайнераас ирсэн дизайныг хэрхэн UI-дизайн болгон зурах талаарх мэргэжлийн сургалт.",
     price: "1,200,000₮"
   },
   {
     icon: "/services/Services2.png",
     title: "Хүүхдийн дизайны сургалт",
-    description: "Дизайны анхан шатны суурь ойлголт олгох сургалт, өнгө, зохиомж, харьцаа гэсэн алтан дүрмийн ойлголттой болно.",
+    description: "Дизайны анхан шатны суурь ойлголт олгох сургалт, өнгө, зохиомж, харьцаа.",
     price: "600,000₮"
   },
   {
     icon: "/services/Services3.png",
-    title: "Front end сургалт",
-    description: "Вэб технологиуд болох html/css/js/reactjs ашиглан хэрхэн вэб хуудсыг хөгжүүлэх талаар анхан шатнаас нь эхлэн практикт суурилсан хөтөлбөрөөр цогц ойлголтыг авна.",
+    title: "Front-End хөгжүүлэлт",
+    description: "HTML/CSS/JS/ReactJS ашиглан вэб хуудсыг хөгжүүлэх талаар анхан шатнаас нь эхлэн сургана.",
     price: "2,500,000₮"
   },
   {
     icon: "/services/Services4.png",
     title: "Зураг авалтын сургалт",
-    description: "Энгийн нөхцөлд мэргэжлийн түвшинд зураг дарж сурах, авсан зургаа хэрхэн засаж янзлах гэх мэт мэргэжлийн арга барилд сургах сургалтандаа таныг урьж байна.",
+    description: "Мэргэжлийн түвшинд зураг дарж сурах, авсан зургаа хэрхэн засаж янзлах сургалт.",
     price: "800,000₮"
   }
 ];
 
+// Анхны хоосон төлөв
+const DEFAULT_COURSE: Course = {
+  icon: null,
+  title: "Сургалтын анги сонгох",
+  price: "0.000.000₮",
+  description: ""
+};
+
 export default function RegistrationModal({ isOpen, onClose }: RegistrationModalProps) {
-  const [selectedCourse, setSelectedCourse] = useState(COURSES[0]);
+  const [selectedCourse, setSelectedCourse] = useState<Course>(DEFAULT_COURSE);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [formData, setFormData] = useState({ name: '', phone: '' });
 
+  // Хаах үед утгуудыг цэвэрлэх функц
+  const handleClose = () => {
+    onClose();
+    // Анимац дууссаны дараа (500ms) анхны төлөвт оруулна
+    setTimeout(() => {
+      setSelectedCourse(DEFAULT_COURSE);
+      setFormData({ name: '', phone: '' });
+      setIsDropdownOpen(false);
+    }, 500);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // selectedCourse.name биш selectedCourse.title болгож зассан
+    if (!selectedCourse.icon) {
+      alert("Та сургалтын ангиа сонгоно уу!");
+      return;
+    }
     alert(`Бүртгэл амжилттай!\nАнги: ${selectedCourse.title}\nҮнэ: ${selectedCourse.price}\nНэр: ${formData.name}\nУтас: ${formData.phone}`);
-    onClose();
+    handleClose();
   };
 
   return (
@@ -72,7 +102,7 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={handleClose}
             className="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-pointer"
           />
 
@@ -85,32 +115,34 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
             className="relative bg-white w-full max-w-[500px] rounded-[32px] p-8 md:p-12 shadow-2xl z-10 font-rounded text-center"
           >
             <button 
-              onClick={onClose}
+              onClick={handleClose}
               className="absolute top-6 right-6 text-gray-400 hover:text-black transition-colors"
             >
               <X size={24} />
             </button>
 
-            {/* Icon Section - Динамик болгосон */}
+            {/* ICON AREA */}
             <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 border-2 border-black rounded-2xl flex items-center justify-center p-3 relative">
-                 {/* Monitor icon-ы оронд тухайн хичээлийн icon-ыг харуулна */}
-                 <Image 
-                   src={selectedCourse.icon} 
-                   alt={selectedCourse.title}
-                   fill
-                   className="object-contain p-2"
-                 />
+              <div className="w-16 h-16 border-2 border-black rounded-2xl flex items-center justify-center p-3 relative bg-white">
+                 {selectedCourse.icon ? (
+                   <Image 
+                     src={selectedCourse.icon} 
+                     alt={selectedCourse.title}
+                     fill
+                     className="object-contain p-2"
+                   />
+                 ) : (
+                   <Monitor size={32} strokeWidth={1.5} />
+                 )}
               </div>
             </div>
 
-            {/* Dropdown Section */}
+            {/* DROPDOWN AREA */}
             <div className="relative mb-2">
               <button 
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="flex items-center justify-center gap-2 mx-auto text-lg font-bold text-black hover:text-[#8ab300] transition-colors"
               >
-                {/* selectedCourse.name -> selectedCourse.title */}
                 {selectedCourse.title}
                 <ChevronDown 
                   size={20} 
@@ -128,15 +160,17 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
                   >
                     {COURSES.map((course, index) => (
                       <button
-                        // course.id байхгүй тул index ашиглав
                         key={index}
                         onClick={() => {
                           setSelectedCourse(course);
                           setIsDropdownOpen(false);
                         }}
-                        className="w-full text-left px-6 py-3 hover:bg-gray-50 text-sm font-medium transition-colors text-black border-b border-gray-50 last:border-none"
+                        className="w-full text-left px-6 py-3 hover:bg-gray-50 text-sm font-medium transition-colors text-black border-b border-gray-50 last:border-none flex items-center gap-3"
                       >
-                        {/* course.name -> course.title */}
+                         {/* List дотор жижиг icon харуулах */}
+                         <div className="relative w-6 h-6 shrink-0">
+                            <Image src={course.icon!} alt="icon" fill className="object-contain"/>
+                         </div>
                         {course.title}
                       </button>
                     ))}
@@ -145,14 +179,14 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
               </AnimatePresence>
             </div>
 
-            {/* Price */}
+            {/* PRICE AREA */}
             <div className="mb-10">
               <span className="text-3xl font-black text-black tracking-tight">
                 {selectedCourse.price}
               </span>
             </div>
 
-            {/* Form */}
+            {/* FORM AREA */}
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="text-left space-y-1">
                 <label className="text-xs font-bold ml-4 text-gray-500">Таны Овог Нэр</label>

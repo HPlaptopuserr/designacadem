@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Pricing() {
   const courses = [
@@ -28,33 +28,37 @@ export default function Pricing() {
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const itemsToShow = 3; // Хэдэн ширхэг харагдах
-  const len = courses.length;
+  // Modal-д зориулсан state
+  const [selectedCourse, setSelectedCourse] = useState<typeof courses[0] | null>(null);
 
-  // Modulo ашиглахгүйгээр шууд тоолно (Infinite loop logic)
+  // Scroll түгжих логик
+  useEffect(() => {
+    document.body.style.overflow = selectedCourse ? 'hidden' : 'unset';
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [selectedCourse]);
+
   const nextSlide = () => setCurrentIndex((prev) => prev + 1);
   const prevSlide = () => setCurrentIndex((prev) => prev - 1);
 
-  // Index тооцоолох функц (Сөрөг тоог зөв тооцоолно)
   const getCourseData = (index: number) => {
+    const len = courses.length;
     const wrappedIndex = ((index % len) + len) % len;
     return courses[wrappedIndex];
   };
 
-  // Харагдах картуудыг үүсгэх
   const visibleItems = [];
-  for (let i = 0; i < itemsToShow; i++) {
+  for (let i = 0; i < 3; i++) {
     const virtualIndex = currentIndex + i;
     visibleItems.push({
       data: getCourseData(virtualIndex),
-      key: virtualIndex, // Unique Key чухал!
+      key: virtualIndex, 
     });
   }
 
   return (
     <section className="relative bg-[#C2F217] py-24 overflow-hidden font-rounded text-black">
       
-      {/* Background decoration */}
+      {/* Background elements */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full z-0 pointer-events-none select-none flex items-center justify-center">
         <Image 
           src="/logos/bgw.png" 
@@ -65,36 +69,25 @@ export default function Pricing() {
         />
       </div>
 
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-5 z-0">
-        <div className="absolute top-[-20%] left-[-10%] text-[500px] font-black leading-none">S</div>
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 relative z-10">
-        
         <div className="text-center mb-16">
           <h2 className="text-5xl font-black mb-2 uppercase">UI/UX</h2>
           <p className="text-2xl font-medium opacity-80">Дизайны ганцаарчилсан сургалт</p>
         </div>
 
+        {/* Desktop Arrows */}
         <button onClick={prevSlide} className="hidden xl:flex absolute top-1/2 -translate-y-1/2 -left-16 2xl:-left-24 w-14 h-14 bg-black text-[#C2F217] rounded-full items-center justify-center hover:scale-110 active:scale-95 transition-transform shadow-lg z-20">
           <ChevronLeft size={28} strokeWidth={2.5} />
         </button>
 
-        {/* Grid Layout with Motion */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {visibleItems.map(({ data: course, key }) => (
             <motion.div 
-              key={key} // Virtual Index ашигласнаар React үүнийг нэг элемент шилжиж байна гэж танина
-              layout // Smooth layout transition
+              key={key} 
+              layout 
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ 
-                type: "spring", 
-                stiffness: 80, 
-                damping: 15, 
-                mass: 1 
-              }}
-              className="flex flex-col items-center text-center group p-6 border border-black/5 bg-[#C2F217]/50 backdrop-blur-sm md:backdrop-blur-0 md:bg-transparent"
+              className="flex flex-col items-center text-center group p-6 bg-[#C2F217]/50 md:bg-transparent"
             >
               <h3 className="text-2xl font-bold uppercase mb-2 group-hover:scale-105 transition-transform duration-300">
                 {course.title}
@@ -108,10 +101,12 @@ export default function Pricing() {
               <div className="mb-6 relative">
                 <span className="text-3xl font-bold tracking-tight">{course.price}</span>
                 <span className="absolute -top-1 -right-3 text-xs font-bold">₮</span>
-                <span className="block text-[8px] font-bold text-right mt-1 opacity-60 uppercase tracking-widest">Сараар</span>
               </div>
               
-              <button className="bg-black text-white text-[10px] font-bold uppercase py-3 px-10 rounded-full hover:scale-105 transition-transform shadow-md hover:shadow-xl">
+              <button 
+                onClick={() => setSelectedCourse(course)}
+                className="bg-black text-white text-[10px] font-bold uppercase py-3 px-10 rounded-full hover:scale-105 transition-transform shadow-md"
+              >
                 Бүртгүүлэх
               </button>
             </motion.div>
@@ -122,12 +117,61 @@ export default function Pricing() {
           <ChevronRight size={28} strokeWidth={2.5} />
         </button>
 
+        {/* Mobile Buttons */}
         <div className="flex justify-center gap-6 mt-12 xl:hidden">
-            <button onClick={prevSlide} className="w-12 h-12 bg-black text-[#C2F217] rounded-full flex items-center justify-center shadow-md active:scale-95"><ChevronLeft size={24} /></button>
-            <button onClick={nextSlide} className="w-12 h-12 border border-black text-black rounded-full flex items-center justify-center shadow-md active:scale-95"><ChevronRight size={24} /></button>
+            <button onClick={prevSlide} className="w-12 h-12 bg-black text-[#C2F217] rounded-full flex items-center justify-center shadow-md"><ChevronLeft size={24} /></button>
+            <button onClick={nextSlide} className="w-12 h-12 border border-black text-black rounded-full flex items-center justify-center shadow-md"><ChevronRight size={24} /></button>
         </div>
-
       </div>
+
+      {/* Modal Section - Нэг файл дотор багтаав */}
+      <AnimatePresence>
+        {selectedCourse && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedCourse(null)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative bg-white rounded-[2rem] p-8 md:p-12 w-full max-w-lg shadow-2xl z-[101]"
+            >
+              <button 
+                onClick={() => setSelectedCourse(null)}
+                className="absolute top-6 right-6 p-2 rounded-full hover:bg-gray-100 transition-colors"
+              >
+                <X size={24} className="text-gray-500" />
+              </button>
+
+              <div className="flex flex-col items-center text-center mb-8">
+                <h3 className="text-xl font-bold uppercase mb-2 text-black">{selectedCourse.title}</h3>
+                <p className="text-3xl font-black text-black">{selectedCourse.price}₮</p>
+              </div>
+
+              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">Таны Овог Нэр</label>
+                  <input type="text" required className="w-full px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#C2F217] transition-all text-black" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">Утасны Дугаар</label>
+                  <input type="tel" required className="w-full px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#C2F217] transition-all text-black" />
+                </div>
+                <button className="w-full bg-[#C2F217] text-black font-bold text-sm uppercase py-4 rounded-full hover:brightness-95 active:scale-[0.98] transition-all shadow-md mt-4">
+                  Бүртгүүлэх
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
     </section>
   );
 }

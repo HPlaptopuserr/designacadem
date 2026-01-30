@@ -29,7 +29,6 @@ const NAV_LINKS: NavLink[] = [
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  // ШИНЭ: Modal нээх/хаах state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const pathname = usePathname(); 
 
@@ -85,7 +84,6 @@ export default function Header() {
           </nav>
 
           <div className="hidden xl:flex items-center gap-4">
-            {/* ШИНЭ: onClick event нэмсэн */}
             <button 
               onClick={() => setIsModalOpen(true)}
               className="bg-[#ccff00] text-black font-black text-[13px] px-8 py-3 rounded-full hover:bg-[#dfff40] hover:shadow-[0_0_20px_rgba(204,255,0,0.3)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
@@ -114,7 +112,6 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile Menu */}
       <div 
         className={`fixed inset-0 bg-black/95 backdrop-blur-2xl z-40 transition-all duration-500 ease-in-out ${
           isMobileMenuOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 -translate-y-4 invisible pointer-events-none'
@@ -142,7 +139,6 @@ export default function Header() {
           </nav>
 
           <div className="mt-auto flex flex-col gap-4">
-            {/* ШИНЭ: Mobile menu доторх товчлуур бас modal нээнэ */}
             <button 
               onClick={() => {
                 setIsMobileMenuOpen(false);
@@ -162,7 +158,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* ШИНЭ: Modal Component-ийг энд байрлуулна */}
       <RegistrationModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
